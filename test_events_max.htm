@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>Test Events Max</title>
+	
+	<link rel="stylesheet" type="text/css" media="all" href="test_events_max.css">
+	
+	<script type="text/javascript" src="events_max.js"></script>
+	<script type="text/javascript" src="test_events_max.js"></script>
+	<script type="text/javascript">
+		addEventHandler(document, "DOMContentLoaded", function (evt){
+				var blue = document.getElementById("blue");
+				var green = document.getElementById("green");
+				var red = document.getElementById("red");
+				var gray = document.getElementById("gray");
+				var scroll = document.getElementById("scroll");
+				var input = document.getElementById("input");
+				var textarea = document.getElementById("textarea");
+				
+				var captureColor = "#F4F4F4";
+				
+				function fromTo(evt){ return (evt.fromElement&&evt.fromElement.id||"")+"-->"+(evt.toElement&&evt.toElement.id||""); }
+				
+				//mouseover
+				addEventHandler(blue, "mouseover", function (evt){ log(evt, {color:"#88F", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(green, "mouseover", function (evt){ log(evt, {color:"#8B8", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(red, "mouseover", function (evt){ log(evt, {color:"#F99", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(gray, "mouseover", function (evt){ log(evt, {color:"#BBB", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(blue, "mouseover", function (evt){ log(evt, {color:"#88F"}, fromTo(evt)); });
+				addEventHandler(green, "mouseover", function (evt){ log(evt, {color:"#8B8"}, fromTo(evt)); });
+				addEventHandler(red, "mouseover", function (evt){ log(evt, {color:"#F99"}, fromTo(evt)); });
+				addEventHandler(gray, "mouseover", function (evt){ log(evt, {color:"#BBB"}, fromTo(evt)); });
+				
+				//mouseenter
+				addEventHandler(blue, "mouseenter", function (evt){ log(evt, {color:"blue", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(green, "mouseenter", function (evt){ log(evt, {color:"green", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(red, "mouseenter", function (evt){ log(evt, {color:"red", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(gray, "mouseenter", function (evt){ log(evt, {color:"gray", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(blue, "mouseenter", function (evt){ log(evt, {color:"blue"}, fromTo(evt)); });
+				addEventHandler(green, "mouseenter", function (evt){ log(evt, {color:"green"}, fromTo(evt)); });
+				addEventHandler(red, "mouseenter", function (evt){ log(evt, {color:"red"}, fromTo(evt)); });
+				addEventHandler(gray, "mouseenter", function (evt){ log(evt, {color:"gray"}, fromTo(evt)); });
+				
+				//mouseout
+				addEventHandler(blue, "mouseout", function (evt){ log(evt, {color:"#88F", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(green, "mouseout", function (evt){ log(evt, {color:"#8B8", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(red, "mouseout", function (evt){ log(evt, {color:"#F99", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(gray, "mouseout", function (evt){ log(evt, {color:"#BBB", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(blue, "mouseout", function (evt){ log(evt, {color:"#88F"}, fromTo(evt)); });
+				addEventHandler(green, "mouseout", function (evt){ log(evt, {color:"#8B8"}, fromTo(evt)); });
+				addEventHandler(red, "mouseout", function (evt){ log(evt, {color:"#F99"}, fromTo(evt)); });
+				addEventHandler(gray, "mouseout", function (evt){ log(evt, {color:"#BBB"}, fromTo(evt)); });
+				
+				//mouseleave
+				addEventHandler(blue, "mouseleave", function (evt){ log(evt, {color:"blue", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(green, "mouseleave", function (evt){ log(evt, {color:"green", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(red, "mouseleave", function (evt){ log(evt, {color:"red", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(gray, "mouseleave", function (evt){ log(evt, {color:"gray", backgroundColor:captureColor}, fromTo(evt)); }, true);
+				addEventHandler(blue, "mouseleave", function (evt){ log(evt, {color:"blue"}, fromTo(evt)); });
+				addEventHandler(green, "mouseleave", function (evt){ log(evt, {color:"green"}, fromTo(evt)); });
+				addEventHandler(red, "mouseleave", function (evt){ log(evt, {color:"red"}, fromTo(evt)); });
+				addEventHandler(gray, "mouseleave", function (evt){ log(evt, {color:"gray"}, fromTo(evt)); });
+			});
+	</script>
+	
+</head>
+<body>
+	
+	<div id="test">
+		
+		<div id="blue"><div id="green"><div id="red"></div></div></div>
+		<div id="gray"></div>
+		
+		<div id="scroll">
+			O___O___O___O___O___O___O___O___O<br>
+			___O___O___O___O___O___O___O___O_<br>
+			__O___O___O___O___O___O___O___O__<br>
+			_O___O___O___O___O___O___O___O___<br>
+			O___O___O___O___O___O___O___O___O<br>
+			___O___O___O___O___O___O___O___O_<br>
+			__O___O___O___O___O___O___O___O__<br>
+			_O___O___O___O___O___O___O___O___<br>
+			O___O___O___O___O___O___O___O___O<br>
+			___O___O___O___O___O___O___O___O_<br>
+			__O___O___O___O___O___O___O___O__<br>
+			_O___O___O___O___O___O___O___O___
+		</div>
+		
+		<div id="text">
+			<input id="input" type="text" value="input box"><br>
+			<br>
+			<textarea id="textarea" rows="2" cols="50">text area</textarea>
+		</div>
+		
+	</div>
+	
+	<div id="log">
+		
+		<table>
+			<thead>
+				<tr>
+					<th><!--Entry_Number--></th>
+					<th>Type</th>
+					<th>Phase</th>
+					<th>Current_Target</th>
+					<th>Target</th>
+					<th>Related_Target</th>
+					<th><!--Comment/Value--></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		
+	</div>
+	
+	<div id="clear"></div>
+	
+</body>
+</html>

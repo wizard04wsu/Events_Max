@@ -1,0 +1,76 @@
+html {
+	padding:25px;
+	background-color:#DDD;
+}
+body {
+	margin:0;
+	padding:25px;
+	background-color:#EEE;
+}
+#test {
+	float:left;
+	padding:50px;
+	background-color:#FFF;
+}
+#log {
+	float:right;
+	background-color:#FFF;
+	font-size:75%;
+}
+#clear {
+	clear:both;
+}
+
+#blue {
+	float:left;
+	padding:0 0 50px 50px;
+	margin-bottom:50px;
+	background-color:blue;
+}
+#green {
+	width:50px;
+	padding:0 0 50px 50px;
+	background-color:green;
+}
+#red {
+	width:75px;
+	height:50px;
+	background-color:red;
+	position:relative;
+	/*top:-25px;*/
+}
+#gray {
+	float:left;
+	width:50px;
+	height:150px;
+	margin-bottom:50px;
+	background-color:gray;
+}
+#scroll {
+	float:left;
+	width:200px;
+	height:150px;
+	margin-left:50px;
+	margin-bottom:50px;
+	overflow:auto;
+	background-color:#FF0;
+}
+#text {
+	clear:left;
+}
+
+#log {
+	font-family:"Envy Code R", monospace;
+	padding:0 3px 3px;
+}
+#log table {
+	border-collapse:collapse;
+}
+#log th {
+	padding:0.5em 1em;
+	text-align:left;
+}
+#log td {
+	padding:0 0.5em 0 1em;
+}
+input { float:left; }
