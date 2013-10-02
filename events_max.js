@@ -1,12 +1,11 @@
 /*****************************************
- * Events Max v23.0.1
+ * Events Max
  * Enhanced cross-browser event handling
  * 
  * This work is licensed under a Creative Commons Attribution 3.0 Unported License
  * http://creativecommons.org/licenses/by/3.0/
  *
- * Author: Andy Harrison, http://dragonzreef.com/
- * Date: 1 October 2013
+ * Author: Andy Harrison, http://wizard04.me/
  *****************************************/
 
 //Warning: this will replace any previously defined `addEventHandler` or `removeEventHandler`
