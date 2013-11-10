@@ -207,14 +207,14 @@
 		if(!obj._eventHandlers[type]){
 			obj._eventHandlers[type] = { capture: [], bubble: [] };
 			
-			if(window.addEventListener){	//not IE lte 8; capture phase is supported
+			if(window.addEventListener){	//not IE lte 8
 				obj.addEventListener(type, patchHandler(obj, true), true);
 				obj.addEventListener(type, patchHandler(obj, false), false);
 			}
-			else if(obj.attachEvent){	//IE lte 8; capture phase is not supported
+			else if(obj.attachEvent){	//IE lte 8; capture phase is not natively supported
 				obj.attachEvent("on"+type, patchHandler(obj));
 			}
-			else{	//just in case; capture phase is not supported
+			else{	//just in case; capture phase is not natively supported
 				if(obj["on"+type]){	//if there is already a handler assigned
 					obj["on"+type]._handlerGUID = newGUID;
 					obj._eventHandlers[type]["bubble"][0] = { guid: newGUID++, handler: obj["on"+type] };
