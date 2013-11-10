@@ -674,7 +674,7 @@
 		function getKey(key, char){
 			if(key){
 				switch(key){
-					case "ScrollLock":	return "Scroll";
+					case "Scroll":	return "ScrollLock";
 				}
 				return key;
 			}
@@ -708,7 +708,7 @@
 					case 18:	return "Alt";
 					case 20:	return "CapsLock";
 					case 144:	return "NumLock";
-					case 145:	return "Scroll";
+					case 145:	return "ScrollLock";
 					case 37:	return "Left";
 					case 38:	return "Up";
 					case 39:	return "Right";
