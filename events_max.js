@@ -47,6 +47,10 @@
 //	//These are either the values determined above, or a "guess" derived from event.keyCode (assuming a US English QWERTY keyboard)
 //  event.keyboard.charGuess: printed character, guess based on event.keyCode, or empty string
 //  event.keyboard.keyGuess: key value ("Control", "Down", "Tab", "F1", etc.), printed character, guess based on event.keyCode, or "Unidentified"
+//
+//Custom drag & drop event attributes:
+//
+//	event.draggingFile: true if a file is being dragged into the browser window
 
 //There are a few custom attributes used by this script that must not be manipulated:
 // ._handlerGUID on handler functions
@@ -70,7 +74,7 @@
 	
 	"use strict";
 	
-	var newGUID, windows;
+	var newGUID, windows, draggingStarted;
 	
 	newGUID = 1;	//GUID to assign to the next event handler function without one
 	
@@ -86,6 +90,8 @@
 		windows.push({ window:windowObj, eventStack:[], handlerDepth:0 });
 		return windows[i];
 	}
+	
+	draggingStarted = false;	//used during drag & drop events to determine if files are being dragged
 	
 	
 	window.addEventHandler = addEventHandler;
@@ -165,6 +171,11 @@
 			//add global handlers for the mouseout event type for the object (if they don't already exist)
 			addTypeHandler(obj, "mouseout");
 			if(!obj._eventHandlers["mouseleave"]) obj._eventHandlers["mouseleave"] = { capture: [], bubble: [] };
+		}
+		else if(/^drag|^drop/.test(type)){
+			//make sure the dragstart & dragend events are handled (in case it's not a file being dragged into the window)
+			addTypeHandler(ownerWindow, "dragstart");
+			addTypeHandler(ownerWindow, "dragend");
 		}
 		else{
 			//make sure the object's window handles the event to allow for the maintenance of the event stack
@@ -548,6 +559,16 @@
 		};
 		evt.stopPropagation = patchEvent.stopPropagation;
 		evt.stopImmediatePropagation = patchEvent.stopImmediatePropagation;
+		
+		
+		/*** drag & drop attributes ***/
+		
+		//add custom `draggingFile` attribute
+		if(/^drag|^drop/.test(evt.type)){
+			if(evt.type === "dragstart") draggingStarted = true;
+			evt.draggingFile = !draggingStarted;
+			if(evt.type === "dragend") draggingStarted = false;
+		}
 		
 		
 		/*** mouse & keyboard event attributes ***/
