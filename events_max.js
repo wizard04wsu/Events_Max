@@ -100,21 +100,18 @@
 		
 		type = ""+type;
 		
-		if(!(obj instanceof Object || (!window.addEventListener && typeof(obj) === "object"))){
-			throw new TypeError("Invalid argument for addEventHandler(): obj");
-		}
-		if(!(/^[a-z][0-9a-z]*$/i).test(type)){
-			throw new TypeError("Invalid argument for addEventHandler(): type");
-		}
-		if(typeof(handler) !== "function"){
-			throw new TypeError("Invalid argument for addEventHandler(): handler");
-		}
-		
 		ownerWindow = getOwnerWindow(obj);
 		
 		if(!ownerWindow){
 			//Unable to determine the window in which obj resides; most likely, obj is not a DOM element
 			throw new TypeError("Invalid argument for addEventHandler(): obj");
+		}
+		
+		if(!(/^[a-z][0-9a-z]*$/i).test(type)){
+			throw new TypeError("Invalid argument for addEventHandler(): type");
+		}
+		if(typeof(handler) !== "function"){
+			throw new TypeError("Invalid argument for addEventHandler(): handler");
 		}
 		
 		winInfo = windowInfo(ownerWindow);
@@ -191,9 +188,13 @@
 	//see http://outofhanwell.wordpress.com/2006/07/03/cross-window-events/
 	function getOwnerWindow(obj){
 		var doc, win;
-		doc = obj.ownerDocument || obj.document || obj;
-		/*	  obj==element         obj==window     obj==document */
-		win = doc.defaultView || doc.parentWindow;
+		try{
+			doc = obj.ownerDocument || obj.document || obj;
+			/*	  obj==element         obj==window     obj==document */
+			win = doc.defaultView || doc.parentWindow;
+		}catch(e){	//obj is not an object
+			return null;
+		}
 		try{
 			return win instanceof window.constructor ? win : null;
 		}catch(e){	//IE lte 7
