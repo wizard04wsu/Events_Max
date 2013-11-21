@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>Drag &amp; Drop</title>
+	
+	<style type="text/css" media="all">
+		body {
+			margin:0;
+			padding:0;
+		}
+		#dnd {
+			margin:25px;
+		}
+		#dropzone {
+			float:left;
+			border:5px dashed gray;
+			width:150px;
+			height:150px;
+		}
+		#dropzone.dropFile {
+			border-color:#F9C;
+		}
+		#dropzone.dropOther {
+			border-color:#3F8;
+		}
+		#draggable {
+			float:left;
+			margin-left:25px;
+			width:50px;
+			height:50px;
+			background-color:#6FF;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		/*var addEventHandler = window.top.addEventHandler;
+		var log = window.top.log;
+		
+		addEventHandler(document, "DOMContentLoaded", function (evt){
+				var dropzone = document.getElementById("dropzone");
+				var draggable = document.getElementById("draggable");
+				
+				addEventHandler(draggable, "dragstart", function (evt){
+						log(evt, {}, "in iframe");
+						evt.dataTransfer.setData("box", evt.target.id);
+					});
+				addEventHandler(dropzone, "dragenter", function (evt){
+						evt.preventDefault();	//prevent the default handling (what handling???)
+						log(evt, {}, "in iframe");
+						if(evt.draggingFile){
+							dropzone.className = "dropFile";
+						}
+						else{
+							dropzone.className = "dropOther";
+						}
+					});
+				addEventHandler(dropzone, "dragover", function (evt){
+						evt.preventDefault();	//prevent the default handling; allow data to be dropped here
+					});
+				addEventHandler(dropzone, "dragleave", function (evt){
+						log(evt, {}, "in iframe");
+						dropzone.className = "";
+					});
+				addEventHandler(dropzone, "drop", function (evt){
+						evt.preventDefault();	//prevent the default handling of the dropped data
+						log(evt, {}, "in iframe");
+						dropzone.className = "";
+					});
+			});*/
+	</script>
+	
+</head>
+<body>
+	
+	<div id="dnd">
+		<div id="dropzone">
+			drop here
+		</div>
+		<div id="draggable" draggable="true">drag me</div>
+	</div>
+	
+</body>
+</html>

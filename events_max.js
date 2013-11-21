@@ -106,21 +106,18 @@
 		
 		type = ""+type;
 		
-		if(!(obj instanceof Object || (!window.addEventListener && typeof(obj) === "object"))){
-			throw new TypeError("Invalid argument for addEventHandler(): obj");
-		}
-		if(!(/^[a-z][0-9a-z]*$/i).test(type)){
-			throw new TypeError("Invalid argument for addEventHandler(): type");
-		}
-		if(typeof(handler) !== "function"){
-			throw new TypeError("Invalid argument for addEventHandler(): handler");
-		}
-		
 		ownerWindow = getOwnerWindow(obj);
 		
 		if(!ownerWindow){
 			//Unable to determine the window in which obj resides; most likely, obj is not a DOM element
 			throw new TypeError("Invalid argument for addEventHandler(): obj");
+		}
+		
+		if(!(/^[a-z][0-9a-z]*$/i).test(type)){
+			throw new TypeError("Invalid argument for addEventHandler(): type");
+		}
+		if(typeof(handler) !== "function"){
+			throw new TypeError("Invalid argument for addEventHandler(): handler");
 		}
 		
 		winInfo = windowInfo(ownerWindow);
@@ -173,9 +170,13 @@
 			if(!obj._eventHandlers["mouseleave"]) obj._eventHandlers["mouseleave"] = { capture: [], bubble: [] };
 		}
 		else if(/^drag|^drop/.test(type)){
-			//make sure the dragstart & dragend events are handled (in case it's not a file being dragged into the window)
+			//make sure the object's window handles the dragstart & dragend events so that  `draggingStarted` will be updated if it's not
+			// a file being dragged into the window
 			addTypeHandler(ownerWindow, "dragstart");
 			addTypeHandler(ownerWindow, "dragend");
+			
+			//add global handlers for the event type for the object (if they don't already exist)
+			addTypeHandler(obj, type);
 		}
 		else{
 			//make sure the object's window handles the event to allow for the maintenance of the event stack
@@ -202,9 +203,13 @@
 	//see http://outofhanwell.wordpress.com/2006/07/03/cross-window-events/
 	function getOwnerWindow(obj){
 		var doc, win;
-		doc = obj.ownerDocument || obj.document || obj;
-		/*	  obj==element         obj==window     obj==document */
-		win = doc.defaultView || doc.parentWindow;
+		try{
+			doc = obj.ownerDocument || obj.document || obj;
+			/*	  obj==element         obj==window     obj==document */
+			win = doc.defaultView || doc.parentWindow;
+		}catch(e){	//obj is not an object
+			return null;
+		}
 		try{
 			return win instanceof window.constructor ? win : null;
 		}catch(e){	//IE lte 7

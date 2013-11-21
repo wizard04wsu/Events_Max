@@ -20,6 +20,8 @@
 				var scroll = document.getElementById("scroll");
 				var input = document.getElementById("input");
 				var textarea = document.getElementById("textarea");
+				var dropzone = document.getElementById("dropzone");
+				var draggable = document.getElementById("draggable");
 				
 				var captureColor = "#F4F4F4";
 				
@@ -64,6 +66,68 @@
 				addEventHandler(green, "mouseleave", function (evt){ log(evt, {color:"green"}, fromTo(evt)); });
 				addEventHandler(red, "mouseleave", function (evt){ log(evt, {color:"red"}, fromTo(evt)); });
 				addEventHandler(gray, "mouseleave", function (evt){ log(evt, {color:"gray"}, fromTo(evt)); });
+				
+				//drag & drop
+				addEventHandler(draggable, "dragstart", function (evt){
+						log(evt);
+						evt.dataTransfer.setData("box", evt.target.id);
+					});
+				addEventHandler(dropzone, "dragenter", function (evt){
+						evt.preventDefault();	//prevent the default handling (what handling???)
+						log(evt);
+						if(evt.draggingFile){
+							dropzone.className = "dropFile";
+						}
+						else{
+							dropzone.className = "dropOther";
+						}
+					});
+				addEventHandler(dropzone, "dragover", function (evt){
+						evt.preventDefault();	//prevent the default handling; allow data to be dropped here
+					});
+				addEventHandler(dropzone, "dragleave", function (evt){
+						log(evt);
+						dropzone.className = "";
+					});
+				addEventHandler(dropzone, "drop", function (evt){
+						evt.preventDefault();	//prevent the default handling of the dropped data
+						log(evt);
+						dropzone.className = "";
+					});
+				
+				//drag & drop with an iframe
+				addEventHandler(document.getElementById("dnd-iframe"), "load", function (evt){
+						var dnd_iframe_doc = document.getElementById("dnd-iframe").contentWindow.document;
+						var dropzone = dnd_iframe_doc.getElementById("dropzone");
+						var draggable = dnd_iframe_doc.getElementById("draggable");
+						
+						addEventHandler(draggable, "dragstart", function (evt){
+								log(evt, {}, "in iframe");
+								evt.dataTransfer.setData("box", evt.target.id);
+							});
+						addEventHandler(dropzone, "dragenter", function (evt){
+								evt.preventDefault();	//prevent the default handling (what handling???)
+								log(evt, {}, "in iframe");
+								if(evt.draggingFile){
+									dropzone.className = "dropFile";
+								}
+								else{
+									dropzone.className = "dropOther";
+								}
+							});
+						addEventHandler(dropzone, "dragover", function (evt){
+								evt.preventDefault();	//prevent the default handling; allow data to be dropped here
+							});
+						addEventHandler(dropzone, "dragleave", function (evt){
+								log(evt, {}, "in iframe");
+								dropzone.className = "";
+							});
+						addEventHandler(dropzone, "drop", function (evt){
+								evt.preventDefault();	//prevent the default handling of the dropped data
+								log(evt, {}, "in iframe");
+								dropzone.className = "";
+							});
+					});
 			});
 	</script>
 	
@@ -94,6 +158,15 @@
 			<input id="input" type="text" value="input box"><br>
 			<br>
 			<textarea id="textarea" rows="2" cols="50">text area</textarea>
+		</div>
+		
+		<div id="dnd">
+			<div id="dropzone">
+				drop here
+			</div>
+			<div id="draggable" draggable="true">drag me</div>
+			
+			<iframe id="dnd-iframe" src="test_events_max_iframe.htm"></iframe>
 		</div>
 		
 	</div>
