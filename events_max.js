@@ -196,7 +196,7 @@
 			return null;
 		}
 		try{
-			return win instanceof window.constructor ? win : null;
+			return Object.prototype.toString.call(win) === "[object Window]" ? win : null;
 		}catch(e){	//IE lte 7
 			return win;
 		}
