@@ -892,9 +892,7 @@
 		
 		var quid, handlers, i;
 		
-		ownerWindow = getOwnerWindow(obj);
-		
-		if(!ownerWindow){
+		if(!getOwnerWindow(obj)){
 			//Unable to determine the window in which obj resides; most likely, obj is not a DOM element
 			throw new TypeError("Invalid argument for removeEventHandler(): obj");
 		}
