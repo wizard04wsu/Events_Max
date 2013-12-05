@@ -867,13 +867,16 @@
 		
 		var quid, handlers, i;
 		
-		if(!(obj instanceof Object || (!window.addEventListener && typeof(obj) === "object"))){
+		ownerWindow = getOwnerWindow(obj);
+		
+		if(!ownerWindow){
+			//Unable to determine the window in which obj resides; most likely, obj is not a DOM element
 			throw new TypeError("Invalid argument for removeEventHandler(): obj");
 		}
-		if(!(/^[0-9a-z]+$/i).test(type)){
+		if(!(/^[a-z][0-9a-z]*$/i).test(type)){
 			throw new TypeError("Invalid argument for removeEventHandler(): type");
 		}
-		if(( isNaN(handler_or_guid) && typeof(handler_or_guid) !== "function") || handler_or_guid < 1 || handler_or_guid === Infinity){
+		if(( isNaN(handler_or_guid) && typeof(handler_or_guid) !== "function" ) || handler_or_guid < 1 || handler_or_guid === Infinity){
 			throw new TypeError("Invalid argument for removeEventHandler(): handler_or_guid");
 		}
 		
