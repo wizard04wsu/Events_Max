@@ -8,7 +8,7 @@
  * Author: Andy Harrison, http://wizard04.me/
  *****************************************/
 
-//Warning: this will replace any previously defined `addEventHandler` or `removeEventHandler`
+//Warning: this will replace any `addEventHandler` or `removeEventHandler` properties of the window object
 
 //Cross-browser event registration functions
 //Works correctly across multiple windows/frames/iframes
@@ -94,8 +94,8 @@
 	draggingStarted = false;	//used during drag & drop events to determine if files are being dragged
 	
 	
-	window.addEventHandler = addEventHandler;
-	window.removeEventHandler = removeEventHandler;
+	this.addEventHandler = addEventHandler;
+	this.removeEventHandler = removeEventHandler;
 	
 	
 	/*** event handler registration ***/
@@ -920,4 +920,4 @@
 		
 	};
 	
-})();
+}).call(window);
