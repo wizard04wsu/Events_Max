@@ -75,8 +75,11 @@
 				addEventHandler(dropzone, "dragenter", function (evt){
 						evt.preventDefault();	//prevent the default handling (what handling???)
 						log(evt);
-						if(evt.draggingFile){
+						if(evt.draggingExternal && evt.dataTransfer.types && Array.prototype.indexOf.call(evt.dataTransfer.types, "Files") >= 0){
 							dropzone.className = "dropFile";
+						}
+						else if(evt.draggingExternal){
+							dropzone.className = "dropExt";
 						}
 						else{
 							dropzone.className = "dropOther";
@@ -108,8 +111,11 @@
 						addEventHandler(dropzone, "dragenter", function (evt){
 								evt.preventDefault();	//prevent the default handling (what handling???)
 								log(evt, {}, "in iframe");
-								if(evt.draggingFile){
+								if(evt.draggingExternal && evt.dataTransfer.types && Array.prototype.indexOf.call(evt.dataTransfer.types, "Files") >= 0){
 									dropzone.className = "dropFile";
+								}
+								else if(evt.draggingExternal){
+									dropzone.className = "dropExt";
 								}
 								else{
 									dropzone.className = "dropOther";
