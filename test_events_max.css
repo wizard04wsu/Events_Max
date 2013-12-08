@@ -72,6 +72,9 @@ body {
 #dropzone.dropFile {
 	border-color:#F9C;
 }
+#dropzone.dropExt {
+	border-color:#EE9;
+}
 #dropzone.dropOther {
 	border-color:#3F8;
 }

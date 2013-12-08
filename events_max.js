@@ -50,7 +50,7 @@
 //
 //Custom drag & drop event attributes:
 //
-//	event.draggingFile: true if a file is being dragged into the browser window
+//	event.draggingExternal: true if an object external to the viewport is being dragged (e.g., a file, bookmark, or browser tab)
 
 //There are a few custom attributes used by this script that must not be manipulated:
 // ._handlerGUID on handler functions
@@ -170,8 +170,8 @@
 			if(!obj._eventHandlers["mouseleave"]) obj._eventHandlers["mouseleave"] = { capture: [], bubble: [] };
 		}
 		else if(/^drag|^drop/.test(type)){
-			//make sure the object's window handles the dragstart & dragend events so that  `draggingStarted` will be updated if it's not
-			// a file being dragged into the window
+			//make sure all dragstart & dragend events are handled so that we know the object being dragged is not external to the viewport
+			//the event doesn't have to bubble to window; it just needs to be handled at least once so that `draggingStarted` will be updated by patchEvent()
 			addTypeHandler(ownerWindow, "dragstart");
 			addTypeHandler(ownerWindow, "dragend");
 			
@@ -402,7 +402,7 @@
 		
 		/***** execute handlers for currentTarget *****/
 		
-		//execute the handlers for this phase (in FIFO order)
+		//execute the handlers for this phase (in FIFO order) if propagation has not stopped
 		if(!evtInfo.propagationStopped || (evt.eventPhase === 2 && evtInfo.propagationStoppedAtTarget && !evtInfo.propagationStoppedImmediately)){
 			
 			if(!window.addEventListener){	//IE lte 8
@@ -573,10 +573,10 @@
 		
 		/*** drag & drop attributes ***/
 		
-		//add custom `draggingFile` attribute
+		//add custom `draggingExternal` attribute
 		if(/^drag|^drop/.test(evt.type)){
 			if(evt.type === "dragstart") draggingStarted = true;
-			evt.draggingFile = !draggingStarted;
+			evt.draggingExternal = !draggingStarted;
 			if(evt.type === "dragend") draggingStarted = false;
 		}
 		

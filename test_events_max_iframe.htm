@@ -24,6 +24,9 @@
 		#dropzone.dropFile {
 			border-color:#F9C;
 		}
+		#dropzone.dropExt {
+			border-color:#EE9;
+		}
 		#dropzone.dropOther {
 			border-color:#3F8;
 		}
@@ -51,8 +54,11 @@
 				addEventHandler(dropzone, "dragenter", function (evt){
 						evt.preventDefault();	//prevent the default handling (what handling???)
 						log(evt, {}, "in iframe");
-						if(evt.draggingFile){
+						if(evt.draggingExternal && evt.dataTransfer.types && Array.prototype.indexOf.call(evt.dataTransfer.types, "Files") >= 0){
 							dropzone.className = "dropFile";
+						}
+						else if(evt.draggingExternal){
+							dropzone.className = "dropExt";
 						}
 						else{
 							dropzone.className = "dropOther";
