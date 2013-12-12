@@ -8,7 +8,7 @@
  * Author: Andy Harrison, http://wizard04.me/
  *****************************************/
 
-//Warning: this will replace any `addEventHandler` or `removeEventHandler` properties of the window object
+//Warning: this will replace any `addEventHandler` or `removeEventHandler` properties of this context unless you provide a different context (last line)
 
 //Cross-browser event registration functions
 //Works correctly across multiple windows/frames/iframes
@@ -52,9 +52,9 @@
 //
 //	event.draggingExternal: true if an object external to the viewport is being dragged (e.g., a file, bookmark, or browser tab)
 
-//There are a few custom attributes used by this script that must not be manipulated:
-// ._handlerGUID on handler functions
-// ._eventHandlers on DOM objects that have handlers assigned to them
+//There are a few custom attributes used by this script that must not be manipulated; they end with a space to make it less likely that they will be messed with:
+// ["handlerGUID "] on handler functions
+// ["eventHandlers "] on DOM objects that have handlers assigned to them
 
 //Be aware that browsers act differently when the DOM is manipulated. Much of it seems to have to do with when the propagation path is
 // determined for events (e.g., as soon as they're added to the event loop vs. just before they're dispatched).  Some fire mouseover/out
@@ -153,7 +153,7 @@
 			
 			//add global handlers for the mouseover event type for the object (if they don't already exist)
 			addTypeHandler(obj, "mouseover");
-			if(!obj._eventHandlers["mouseenter"]) obj._eventHandlers["mouseenter"] = { capture: [], bubble: [] };
+			if(!obj["eventHandlers "]["mouseenter"]) obj["eventHandlers "]["mouseenter"] = { capture: [], bubble: [] };
 		}
 		else if(type === "mouseleave"){
 			if(window.addEventListener){	//not IE lte 8
@@ -167,7 +167,7 @@
 			
 			//add global handlers for the mouseout event type for the object (if they don't already exist)
 			addTypeHandler(obj, "mouseout");
-			if(!obj._eventHandlers["mouseleave"]) obj._eventHandlers["mouseleave"] = { capture: [], bubble: [] };
+			if(!obj["eventHandlers "]["mouseleave"]) obj["eventHandlers "]["mouseleave"] = { capture: [], bubble: [] };
 		}
 		else if(/^drag|^drop/.test(type)){
 			//make sure all dragstart & dragend events are handled so that we know the object being dragged is not external to the viewport
@@ -186,16 +186,16 @@
 			addTypeHandler(obj, type);
 		}
 		
-		if(isNaN(handler._handlerGUID) || handler._handlerGUID < 1 || handler._handlerGUID === Infinity){
-			handler._handlerGUID = newGUID++;	//assign a GUID to the handler if it doesn't have one (or if it was messed with)
+		if(isNaN(handler["handlerGUID "]) || handler["handlerGUID "] < 1 || handler["handlerGUID "] === Infinity){
+			handler["handlerGUID "] = newGUID++;	//assign a GUID to the handler if it doesn't have one (or if it was messed with)
 		}
 		
 		phase = useCapture ? "capture" : "bubble";
-		if(!handlerIsAssigned(obj, type, phase, handler._handlerGUID)){	//if this handler isn't already assigned to this object, event type, and phase
-			obj._eventHandlers[type][phase].push({ guid: handler._handlerGUID, handler: handler });	//add the handler to the list
+		if(!handlerIsAssigned(obj, type, phase, handler["handlerGUID "])){	//if this handler isn't already assigned to this object, event type, and phase
+			obj["eventHandlers "][type][phase].push({ guid: handler["handlerGUID "], handler: handler });	//add the handler to the list
 		}
 		
-		return handler._handlerGUID;
+		return handler["handlerGUID "];
 		
 	};
 	
@@ -224,9 +224,9 @@
 	
 	//add global handlers for an event type for an object (if they don't already exist)
 	function addTypeHandler(obj, type){
-		if(!obj._eventHandlers) obj._eventHandlers = {};
-		if(!obj._eventHandlers[type]){
-			obj._eventHandlers[type] = { capture: [], bubble: [] };
+		if(!obj["eventHandlers "]) obj["eventHandlers "] = {};
+		if(!obj["eventHandlers "][type]){
+			obj["eventHandlers "][type] = { capture: [], bubble: [] };
 			
 			if(window.addEventListener){	//not IE lte 8
 				obj.addEventListener(type, patchHandler(obj, true), true);
@@ -237,8 +237,8 @@
 			}
 			else{	//just in case; capture phase is not natively supported
 				if(obj["on"+type]){	//if there is already a handler assigned
-					obj["on"+type]._handlerGUID = newGUID;
-					obj._eventHandlers[type]["bubble"][0] = { guid: newGUID++, handler: obj["on"+type] };
+					obj["on"+type]["handlerGUID "] = newGUID;
+					obj["eventHandlers "][type]["bubble"][0] = { guid: newGUID++, handler: obj["on"+type] };
 				}
 				obj["on"+type] = patchHandler(obj);
 			}
@@ -265,8 +265,8 @@
 	function handlerIsAssigned(obj, type, phase, guid){
 		var handlerList, i;
 		
-		if(!obj._eventHandlers || !obj._eventHandlers[type] || !guid) return false;
-		handlerList = obj._eventHandlers[type][phase];
+		if(!obj["eventHandlers "] || !obj["eventHandlers "][type] || !guid) return false;
+		handlerList = obj["eventHandlers "][type][phase];
 		for(i=0; i<handlerList.length; i++){
 			if(handlerList[i].guid === guid)
 				return true;	//handler is already in the list
@@ -409,9 +409,9 @@
 				winInfo.handlerDepth++;
 			}
 			
-			if(this._eventHandlers && this._eventHandlers[evt.type]){
+			if(this["eventHandlers "] && this["eventHandlers "][evt.type]){
 				
-				handlers = this._eventHandlers[evt.type][capturing ? "capture" : "bubble"];
+				handlers = this["eventHandlers "][evt.type][capturing ? "capture" : "bubble"];
 				for(i=0; i<handlers.length; i++){
 					//execute the handler and update the return value
 					updateReturnValue(handlers[i].handler.call(this, evt));
@@ -869,7 +869,7 @@
 		//nulls event attributes and handler collection
 		function flushHandlers(obj){
 			var prop;
-			obj._eventHandlers = null;
+			obj["eventHandlers "] = null;
 			for(prop in obj){
 				if(prop.slice(0, 2) === "on") obj[prop] = null;
 			}
@@ -903,14 +903,14 @@
 			throw new TypeError("Invalid argument for removeEventHandler(): handler_or_guid");
 		}
 		
-		guid = typeof(handler_or_guid)==="function" ? handler_or_guid._handlerGUID : handler_or_guid;
-		if(isNaN(guid) || guid < 1 || guid === Infinity){	//in case ._handlerGUID was messed with
+		guid = typeof(handler_or_guid)==="function" ? handler_or_guid["handlerGUID "] : handler_or_guid;
+		if(isNaN(guid) || guid < 1 || guid === Infinity){	//in case ["handlerGUID "] was messed with
 			throw new TypeError("Invalid argument for removeEventHandler(): handler_or_guid");
 		}
 		
-		//remove any handlers that have this GUID (should only be one unless ._handlerGUID was messed with)
-		if(obj._eventHandlers && obj._eventHandlers[type]){
-			handlers = obj._eventHandlers[type][useCapture ? "capture" : "bubble"];
+		//remove any handlers that have this GUID (should only be one unless ["handlerGUID "] was messed with)
+		if(obj["eventHandlers "] && obj["eventHandlers "][type]){
+			handlers = obj["eventHandlers "][type][useCapture ? "capture" : "bubble"];
 			for(i=0; i<handlers.length; i++){
 				if(handlers[i].guid === guid){	//handler is in the list
 					handlers.splice(i, 1);	//remove the handler from the list
@@ -920,4 +920,4 @@
 		
 	};
 	
-}).call(window);
+}).call(this);
