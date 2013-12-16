@@ -366,7 +366,7 @@
 		function updateReturnValue(newValue){
 			if(evt.type === "beforeunload"){
 				//in this implementation, only the first non-empty return value will be used; return values from subsequent handlers will be ignored
-				returnValue = typeof(returnValue) !== "undefined" && returnValue !== "" ? returnValue : newValue;
+				returnValue = returnValue !== void(0) && returnValue !== "" ? returnValue : newValue;
 			}
 			else if(evt.type === "mouseover"){
 				//returnValue will be false unless the default action has been cancelled
@@ -461,7 +461,7 @@
 		}
 		
 		//update evt.returnValue
-		evt.returnValue = evt.type === "beforeunload" ? (typeof(returnValue) === "undefined" || returnValue === "") : returnValue;
+		evt.returnValue = evt.type === "beforeunload" ? (returnValue === void(0) || returnValue === "") : returnValue;
 		
 		//for all but IE lte 8, if done handling this event, remove it from the event stack
 		if(window.addEventListener && !capturing && (this === evt.view || evt.bubbles === false)){
@@ -556,9 +556,9 @@
 		
 		if(!evt.target) evt.target = evt.srcElement;
 		if(!evt.srcElement) try{ evt.srcElement = evt.target; }catch(e){}	//IE lte 8 throws an error if evt.target is null (e.g., on a readystatechange event)
-		if(typeof(evt.relatedTarget) === "undefined") try{ evt.relatedTarget = evt.target===evt.toElement ? evt.fromElement : evt.toElement; }catch(e){}
+		if(evt.relatedTarget === void(0)) try{ evt.relatedTarget = evt.target===evt.toElement ? evt.fromElement : evt.toElement; }catch(e){}
 		
-		if(typeof(evt.cancelable) === "undefined") evt.cancelable = true;	//if unknown (IE lte 8), treat event as if it's cancelable
+		if(evt.cancelable === void(0)) evt.cancelable = true;	//if unknown (IE lte 8), treat event as if it's cancelable
 		originalPreventDefault = evt.preventDefault;
 		evt.preventDefault = function preventDefault(){
 			if(this.cancelable){
@@ -596,7 +596,7 @@
 					return originalGetModifierState.call(this, key);
 				}
 			};
-			if(typeof(evt.metaKey) === "undefined") evt.metaKey = originalGetModifierState.call(this, "Meta");
+			if(evt.metaKey === void(0)) evt.metaKey = originalGetModifierState.call(this, "Meta");
 		}
 		
 		
