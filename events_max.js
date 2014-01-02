@@ -74,7 +74,7 @@
 	
 	"use strict";
 	
-	var newGUID, windows, draggingStarted;
+	var newGUID, windows, getClass, draggingStarted;
 	
 	newGUID = 1;	//GUID to assign to the next event handler function without one
 	
@@ -90,6 +90,8 @@
 		windows.push({ window:windowObj, eventStack:[], handlerDepth:0 });
 		return windows[i];
 	}
+	
+	getClass = Object.prototype.toString;
 	
 	draggingStarted = false;	//used during drag & drop events to determine if files are being dragged
 	
@@ -211,7 +213,7 @@
 			return null;
 		}
 		try{
-			if(Object.prototype.toString.call(win) === Object.prototype.toString.call(window)){
+			if(getClass.call(win) === getClass.call(window)){
 				return win;
 			}
 			else{
