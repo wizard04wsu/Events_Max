@@ -2,10 +2,10 @@
  * Events Max
  * Enhanced cross-browser event handling
  * 
- * This work is licensed under a Creative Commons Attribution 3.0 Unported License
- * http://creativecommons.org/licenses/by/3.0/
+ * This work is licensed under MIT License
+ * http://opensource.org/licenses/MIT
  *
- * Author: Andy Harrison, http://wizard04.me/
+ * Copyright (c) 2014 Andrew Harrison
  *****************************************/
 
 //Warning: this will replace any `addEventHandler` or `removeEventHandler` properties of this context unless you provide a different context (last line)
