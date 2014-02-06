@@ -1,13 +1,3 @@
-***********************************************************************************
-* Events Max
-* Enhanced cross-browser event handling
-* 
-* This work is licensed under a Creative Commons Attribution 3.0 Unported License
-* http://creativecommons.org/licenses/by/3.0/
-*
-* Author: Andy Harrison, http://wizard04.me/
-***********************************************************************************
-
 Cross-browser event registration functions
 Works correctly across multiple windows/frames/iframes
 Supports both capture and bubble phases
